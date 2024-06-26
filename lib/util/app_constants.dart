@@ -2,7 +2,7 @@ import 'package:stackfood_multivendor_driver/feature/language/domain/models/lang
 import 'package:stackfood_multivendor_driver/util/images.dart';
 
 class AppConstants {
-  static const String appName = 'StackFood Delivery';
+  static const String appName = 'VT-Mart Delivery';
   static const double appVersion = 7.5;
 
   // static const String baseUrl = 'https://shopmart.tomiru.com';

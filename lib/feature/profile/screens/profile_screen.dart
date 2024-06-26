@@ -230,24 +230,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Get.toNamed(RouteHelper.getPrivacyRoute());
                             }),
                         const SizedBox(height: Dimensions.paddingSizeSmall),
-                        ProfileButtonWidget(
-                          icon: Icons.delete,
-                          title: 'delete_account'.tr,
-                          onTap: () {
-                            Get.dialog(
-                              ConfirmationDialogWidget(
-                                icon: Images.warning,
-                                title: 'are_you_sure_to_delete_account'.tr,
-                                description:
-                                    'it_will_remove_your_all_information'.tr,
-                                isLogOut: true,
-                                onYesPressed: () =>
-                                    profileController.removeDriver(),
-                              ),
-                              useSafeArea: false,
-                            );
-                          },
-                        ),
+                        // ProfileButtonWidget(
+                        //   icon: Icons.delete,
+                        //   title: 'delete_account'.tr,
+                        //   onTap: () {
+                        //     Get.dialog(
+                        //       ConfirmationDialogWidget(
+                        //         icon: Images.warning,
+                        //         title: 'are_you_sure_to_delete_account'.tr,
+                        //         description:
+                        //             'it_will_remove_your_all_information'.tr,
+                        //         isLogOut: true,
+                        //         onYesPressed: () =>
+                        //             profileController.removeDriver(),
+                        //       ),
+                        //       useSafeArea: false,
+                        //     );
+                        //   },
+                        // ),
                         const SizedBox(height: Dimensions.paddingSizeSmall),
                         ProfileButtonWidget(
                             icon: Icons.logout,

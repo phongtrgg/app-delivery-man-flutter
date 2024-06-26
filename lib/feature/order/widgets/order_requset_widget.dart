@@ -41,6 +41,7 @@ class OrderRequestWidget extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
       decoration: BoxDecoration(
+          //note
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
           boxShadow: [
@@ -228,14 +229,14 @@ class OrderRequestWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'restaurant_is'.tr,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: robotoRegular.copyWith(
-                            fontSize: Dimensions.fontSizeSmall,
-                            color: Theme.of(context).disabledColor),
-                      ),
+                      // Text(
+                      //   'restaurant_is'.tr,
+                      //   maxLines: 1,
+                      //   overflow: TextOverflow.ellipsis,
+                      //   style: robotoRegular.copyWith(
+                      //       fontSize: Dimensions.fontSizeSmall,
+                      //       color: Theme.of(context).disabledColor),
+                      // ),
                       const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                       Container(
                         decoration: BoxDecoration(

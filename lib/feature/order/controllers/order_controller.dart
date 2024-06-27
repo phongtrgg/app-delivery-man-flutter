@@ -40,16 +40,30 @@ class OrderController extends GetxController implements GetxService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Position _position = Position(longitude: 0, latitude: 0, timestamp: DateTime.now(), accuracy: 1, altitude: 1, heading: 1, speed: 1, speedAccuracy: 1, altitudeAccuracy: 1, headingAccuracy: 1);
+  Position _position = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 1,
+      altitude: 1,
+      heading: 1,
+      speed: 1,
+      speedAccuracy: 1,
+      altitudeAccuracy: 1,
+      headingAccuracy: 1);
   Position get position => _position;
 
-  Placemark _placeMark = Placemark(name: 'Unknown', subAdministrativeArea: 'Location', isoCountryCode: 'Found');
+  Placemark _placeMark = Placemark(
+      name: 'Unknown',
+      subAdministrativeArea: 'Location',
+      isoCountryCode: 'Found');
   Placemark get placeMark => _placeMark;
 
   String _otp = '';
   String get otp => _otp;
 
-  String get address => '${_placeMark.name} ${_placeMark.subAdministrativeArea} ${_placeMark.isoCountryCode}';
+  String get address =>
+      '${_placeMark.name} ${_placeMark.subAdministrativeArea} ${_placeMark.isoCountryCode}';
 
   bool _paginate = false;
   bool get paginate => _paginate;
@@ -76,21 +90,24 @@ class OrderController extends GetxController implements GetxService {
   List<XFile> _pickedPrescriptions = [];
   List<XFile> get pickedPrescriptions => _pickedPrescriptions;
 
-  void changeDeliveryImageStatus({bool isUpdate = true}){
+  void changeDeliveryImageStatus({bool isUpdate = true}) {
     _showDeliveryImageField = !_showDeliveryImageField;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  void pickPrescriptionImage({required bool isRemove, required bool isCamera}) async {
-    if(isRemove) {
+  void pickPrescriptionImage(
+      {required bool isRemove, required bool isCamera}) async {
+    if (isRemove) {
       _pickedPrescriptions = [];
-    }else {
-      XFile? xFile = await ImagePicker().pickImage(source: isCamera ? ImageSource.camera : ImageSource.gallery, imageQuality: 50);
-      if(xFile != null) {
+    } else {
+      XFile? xFile = await ImagePicker().pickImage(
+          source: isCamera ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50);
+      if (xFile != null) {
         _pickedPrescriptions.add(xFile);
-        if(Get.isDialogOpen!){
+        if (Get.isDialogOpen!) {
           Get.back();
         }
       }
@@ -103,13 +120,14 @@ class OrderController extends GetxController implements GetxService {
     update();
   }
 
-  void setOrderCancelReason(String? reason){
+  void setOrderCancelReason(String? reason) {
     _cancelReason = reason;
     update();
   }
 
-  Future<void> getOrderCancelReasons()async {
-    List<CancellationData>? orderCancelReasons = await orderServiceInterface.getCancelReasons();
+  Future<void> getOrderCancelReasons() async {
+    List<CancellationData>? orderCancelReasons =
+        await orderServiceInterface.getCancelReasons();
     if (orderCancelReasons != null) {
       _orderCancelReasons = [];
       _orderCancelReasons!.addAll(orderCancelReasons);
@@ -119,16 +137,17 @@ class OrderController extends GetxController implements GetxService {
 
   Future<void> getAllOrders() async {
     List<OrderModel>? allOrderList = await orderServiceInterface.getAllOrders();
-    if(allOrderList != null) {
+    if (allOrderList != null) {
       _allOrderList = [];
       _allOrderList!.addAll(allOrderList);
-      _deliveredOrderList = orderServiceInterface.sortDeliveredOrderList(_allOrderList!);
+      _deliveredOrderList =
+          orderServiceInterface.sortDeliveredOrderList(_allOrderList!);
     }
     update();
   }
 
   Future<void> getCompletedOrders(int offset) async {
-    if(offset == 1) {
+    if (offset == 1) {
       _offsetList = [];
       _offset = 1;
       _completedOrderList = null;
@@ -136,7 +155,8 @@ class OrderController extends GetxController implements GetxService {
     }
     if (!_offsetList.contains(offset)) {
       _offsetList.add(offset);
-      PaginatedOrderModel? paginatedOrderModel = await orderServiceInterface.getCompletedOrderList(offset);
+      PaginatedOrderModel? paginatedOrderModel =
+          await orderServiceInterface.getCompletedOrderList(offset);
       if (paginatedOrderModel != null) {
         if (offset == 1) {
           _completedOrderList = [];
@@ -147,7 +167,7 @@ class OrderController extends GetxController implements GetxService {
         update();
       }
     } else {
-      if(_paginate) {
+      if (_paginate) {
         _paginate = false;
         update();
       }
@@ -164,49 +184,59 @@ class OrderController extends GetxController implements GetxService {
   }
 
   Future<void> getCurrentOrders() async {
-    List<OrderModel>? currentOrderList = await orderServiceInterface.getCurrentOrders();
-    if(currentOrderList != null) {
+    List<OrderModel>? currentOrderList =
+        await orderServiceInterface.getCurrentOrders();
+    if (currentOrderList != null) {
       _currentOrderList = [];
-      _currentOrderList!.addAll(currentOrderList);
+      _currentOrderList!.addAll(currentOrderList.reversed);
     }
     update();
   }
 
   Future<void> getOrderWithId(int? orderId) async {
-    OrderModel? orderModel = await orderServiceInterface.getOrderWithId(orderId);
-    if(orderModel != null) {
+    OrderModel? orderModel =
+        await orderServiceInterface.getOrderWithId(orderId);
+    if (orderModel != null) {
       _orderModel = orderModel;
     }
     update();
   }
 
   Future<void> getLatestOrders() async {
-    List<OrderModel>? latestOrderList = await orderServiceInterface.getLatestOrders();
-    if(latestOrderList != null) {
+    List<OrderModel>? latestOrderList =
+        await orderServiceInterface.getLatestOrders();
+    if (latestOrderList != null) {
       _latestOrderList = [];
-      List<int?> ignoredIdList = orderServiceInterface.prepareIgnoreIdList(_ignoredRequests);
-      _latestOrderList!.addAll(orderServiceInterface.processLatestOrders(latestOrderList, ignoredIdList));
+      List<int?> ignoredIdList =
+          orderServiceInterface.prepareIgnoreIdList(_ignoredRequests);
+      _latestOrderList!.addAll(orderServiceInterface.processLatestOrders(
+          latestOrderList, ignoredIdList));
     }
     update();
   }
 
-  Future<bool> updateOrderStatus(int? orderId, String status, {bool back = false,  String? reason}) async {
+  Future<bool> updateOrderStatus(int? orderId, String status,
+      {bool back = false, String? reason}) async {
     _isLoading = true;
     update();
-    List<MultipartBody> multiParts = orderServiceInterface.prepareOrderProofImages(_pickedPrescriptions);
+    List<MultipartBody> multiParts =
+        orderServiceInterface.prepareOrderProofImages(_pickedPrescriptions);
     UpdateStatusBody updateStatusBody = UpdateStatusBody(
-      orderId: orderId, status: status,
-      otp: status == 'delivered' ? _otp : null, reason: reason,
+      orderId: orderId,
+      status: status,
+      otp: status == 'delivered' ? _otp : null,
+      reason: reason,
     );
-    ResponseModel responseModel = await orderServiceInterface.updateOrderStatus(updateStatusBody, multiParts);
+    ResponseModel responseModel = await orderServiceInterface.updateOrderStatus(
+        updateStatusBody, multiParts);
     Get.back(result: responseModel.isSuccess);
-    if(responseModel.isSuccess) {
-      if(back) {
+    if (responseModel.isSuccess) {
+      if (back) {
         Get.back();
       }
       getCurrentOrders();
       showCustomSnackBar(responseModel.message, isError: false);
-    }else {
+    } else {
       showCustomSnackBar(responseModel.message, isError: true);
     }
     _isLoading = false;
@@ -216,23 +246,26 @@ class OrderController extends GetxController implements GetxService {
 
   Future<void> getOrderDetails(int? orderID) async {
     _orderDetailsModel = null;
-    List<OrderDetailsModel>? orderDetailsModel = await orderServiceInterface.getOrderDetails(orderID);
-    if(orderDetailsModel != null) {
+    List<OrderDetailsModel>? orderDetailsModel =
+        await orderServiceInterface.getOrderDetails(orderID);
+    if (orderDetailsModel != null) {
       _orderDetailsModel = [];
       _orderDetailsModel!.addAll(orderDetailsModel);
     }
     update();
   }
 
-  Future<bool> acceptOrder(int? orderID, int index, OrderModel orderModel) async {
+  Future<bool> acceptOrder(
+      int? orderID, int index, OrderModel orderModel) async {
     _isLoading = true;
     update();
-    ResponseModel responseModel = await orderServiceInterface.acceptOrder(orderID);
+    ResponseModel responseModel =
+        await orderServiceInterface.acceptOrder(orderID);
     Get.back();
-    if(responseModel.isSuccess) {
+    if (responseModel.isSuccess) {
       _latestOrderList!.removeAt(index);
       _currentOrderList!.add(orderModel);
-    }else {
+    } else {
       showCustomSnackBar(responseModel.message, isError: true);
     }
     _isLoading = false;
@@ -246,7 +279,8 @@ class OrderController extends GetxController implements GetxService {
   }
 
   void ignoreOrder(int index) {
-    _ignoredRequests.add(IgnoreModel(id: _latestOrderList![index].id, time: DateTime.now()));
+    _ignoredRequests.add(
+        IgnoreModel(id: _latestOrderList![index].id, time: DateTime.now()));
     _latestOrderList!.removeAt(index);
     orderServiceInterface.setIgnoreList(_ignoredRequests);
     update();
@@ -255,8 +289,12 @@ class OrderController extends GetxController implements GetxService {
   void removeFromIgnoreList() {
     List<IgnoreModel> tempList = [];
     tempList.addAll(_ignoredRequests);
-    for(int index=0; index<tempList.length; index++) {
-      if(Get.find<SplashController>().currentTime.difference(tempList[index].time!).inMinutes > 10) {
+    for (int index = 0; index < tempList.length; index++) {
+      if (Get.find<SplashController>()
+              .currentTime
+              .difference(tempList[index].time!)
+              .inMinutes >
+          10) {
         tempList.removeAt(index);
       }
     }
@@ -267,11 +305,12 @@ class OrderController extends GetxController implements GetxService {
 
   Future<void> getCurrentLocation() async {
     Position currentPosition = await Geolocator.getCurrentPosition();
-    if(!GetPlatform.isWeb) {
+    if (!GetPlatform.isWeb) {
       try {
-        List<Placemark> placeMarks = await placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
+        List<Placemark> placeMarks = await placemarkFromCoordinates(
+            currentPosition.latitude, currentPosition.longitude);
         _placeMark = placeMarks.first;
-      }catch(_) {}
+      } catch (_) {}
     }
     _position = currentPosition;
     update();
@@ -279,9 +318,8 @@ class OrderController extends GetxController implements GetxService {
 
   void setOtp(String otp) {
     _otp = otp;
-    if(otp != '') {
+    if (otp != '') {
       update();
     }
   }
-
 }

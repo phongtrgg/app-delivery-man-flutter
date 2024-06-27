@@ -91,26 +91,26 @@ class OrderProductWidgetWidget extends StatelessWidget {
                       ),
                     ))
                   : const Expanded(child: SizedBox()),
-              Get.find<SplashController>().configModel!.toggleVegNonVeg!
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: Dimensions.paddingSizeExtraSmall,
-                          horizontal: Dimensions.paddingSizeSmall),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radiusSmall),
-                        color: Theme.of(context).primaryColor.withOpacity(0.1),
-                      ),
-                      child: Text(
-                        orderDetails.foodDetails!.veg == 0
-                            ? 'non_veg'.tr
-                            : 'veg'.tr,
-                        style: robotoRegular.copyWith(
-                            fontSize: Dimensions.fontSizeExtraSmall,
-                            color: Theme.of(context).primaryColor),
-                      ),
-                    )
-                  : const SizedBox(),
+              // Get.find<SplashController>().configModel!.toggleVegNonVeg!
+              //     ? Container(
+              //         padding: const EdgeInsets.symmetric(
+              //             vertical: Dimensions.paddingSizeExtraSmall,
+              //             horizontal: Dimensions.paddingSizeSmall),
+              //         decoration: BoxDecoration(
+              //           borderRadius:
+              //               BorderRadius.circular(Dimensions.radiusSmall),
+              //           color: Theme.of(context).primaryColor.withOpacity(0.1),
+              //         ),
+              //         child: Text(
+              //           orderDetails.foodDetails!.veg == 0
+              //               ? 'non_veg'.tr
+              //               : 'veg'.tr,
+              //           style: robotoRegular.copyWith(
+              //               fontSize: Dimensions.fontSizeExtraSmall,
+              //               color: Theme.of(context).primaryColor),
+              //         ),
+              //       )
+              //     : const SizedBox(),
             ]),
           ]),
         ),

@@ -186,35 +186,79 @@ class OrderRequestWidget extends StatelessWidget {
                             color: Theme.of(context).disabledColor),
                       ),
                     ])),
-                InkWell(
-                  onTap: () => Get.to(() => OrderLocationScreen(
-                        orderModel: orderModel,
-                        orderController: orderController,
-                        index: index,
-                        onTap: onTap,
-                      )),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: Dimensions.paddingSizeSmall,
-                        vertical: Dimensions.paddingSizeSmall),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius:
-                          BorderRadius.circular(Dimensions.radiusDefault),
-                    ),
-                    child: Text(
-                      'view_on_map'.tr,
-                      style: robotoRegular.copyWith(
-                          fontSize: Dimensions.fontSizeExtraSmall,
-                          color: Theme.of(context).cardColor),
+              ]),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 50),
+                  Expanded(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text(
+                          //   'restaurant_is'.tr,
+                          //   maxLines: 1,
+                          //   overflow: TextOverflow.ellipsis,
+                          //   style: robotoRegular.copyWith(
+                          //       fontSize: Dimensions.fontSizeSmall,
+                          //       color: Theme.of(context).disabledColor),
+                          // ),
+                          const SizedBox(
+                              height: Dimensions.paddingSizeExtraSmall),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(
+                                  Dimensions.radiusDefault),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.paddingSizeDefault,
+                                vertical: Dimensions.paddingSizeSmall),
+                            child: Text(
+                              '${distance > 1000 ? '1000+' : distance.toStringAsFixed(2)} ${'km_away_from_you'.tr}',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: robotoRegular.copyWith(
+                                  fontSize: Dimensions.fontSizeSmall),
+                            ),
+                          ),
+                        ]),
+                  ),
+                  InkWell(
+                    onTap: () => Get.to(() => OrderLocationScreen(
+                          orderModel: orderModel,
+                          orderController: orderController,
+                          index: index,
+                          onTap: onTap,
+                        )),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.paddingSizeSmall,
+                          vertical: Dimensions.paddingSizeSmall),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radiusDefault),
+                      ),
+                      child: Text(
+                        'view_on_map'.tr,
+                        style: robotoRegular.copyWith(
+                            fontSize: Dimensions.fontSizeExtraSmall,
+                            color: Theme.of(context).cardColor),
+                      ),
                     ),
                   ),
-                ),
-              ]),
+                  const SizedBox(width: 50),
+                ],
+              ),
             ]),
           ),
           Container(
-            height: 80,
+            height: 60,
             decoration: BoxDecoration(
                 color: Theme.of(context).disabledColor.withOpacity(0.05),
                 borderRadius: const BorderRadius.vertical(
@@ -223,41 +267,6 @@ class OrderRequestWidget extends StatelessWidget {
             margin: const EdgeInsets.all(0.2),
             child:
                 Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Text(
-                      //   'restaurant_is'.tr,
-                      //   maxLines: 1,
-                      //   overflow: TextOverflow.ellipsis,
-                      //   style: robotoRegular.copyWith(
-                      //       fontSize: Dimensions.fontSizeSmall,
-                      //       color: Theme.of(context).disabledColor),
-                      // ),
-                      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-                      Container(
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.3),
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radiusDefault),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: Dimensions.paddingSizeDefault,
-                            vertical: Dimensions.paddingSizeSmall),
-                        child: Text(
-                          '${distance > 1000 ? '1000+' : distance.toStringAsFixed(2)} ${'km_away_from_you'.tr}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: robotoRegular.copyWith(
-                              fontSize: Dimensions.fontSizeSmall),
-                        ),
-                      ),
-                    ]),
-              ),
               const SizedBox(width: Dimensions.paddingSizeSmall),
               Expanded(
                 flex: 3,

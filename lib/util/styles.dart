@@ -19,3 +19,8 @@ const robotoBlack = TextStyle(
   fontFamily: 'Roboto',
   fontWeight: FontWeight.w900,
 );
+
+const robotoMediumTitleSplash = TextStyle(
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w500,
+    color: Color(0xFFffbd5c));

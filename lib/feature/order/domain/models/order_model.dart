@@ -76,6 +76,7 @@ class OrderModel {
   double? storeDiscountAmount;
   bool? taxStatus;
   double? additionalCharge;
+  List<String>? deliveryPictureByCustomer;
 
   OrderModel({
     this.id,
@@ -121,6 +122,7 @@ class OrderModel {
     this.storeDiscountAmount,
     this.taxStatus,
     this.additionalCharge,
+    this.deliveryPictureByCustomer,
   });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
@@ -154,27 +156,30 @@ class OrderModel {
     vendorId = json['vendor_id'];
     detailsCount = json['details_count'];
     orderNote = json['order_note'];
-    deliveryAddress = json['delivery_address'] != null ? DeliveryAddress.fromJson(json['delivery_address']) : null;
-    customer = json['customer'] != null ? Customer.fromJson(json['customer']) : null;
+    deliveryAddress = json['delivery_address'] != null
+        ? DeliveryAddress.fromJson(json['delivery_address'])
+        : null;
+    customer =
+        json['customer'] != null ? Customer.fromJson(json['customer']) : null;
     processingTime = json['processing_time'];
     chatPermission = json['chat_permission'];
     restaurantModel = json['restaurant_model'];
     cutlery = json['cutlery'];
     unavailableItemNote = json['unavailable_item_note'];
     deliveryInstruction = json['delivery_instruction'];
-    if(json['order_proof'] != null && json['order_proof'] != "null"){
-      if(json['order_proof'].toString().startsWith('[')){
+    if (json['order_proof'] != null && json['order_proof'] != "null") {
+      if (json['order_proof'].toString().startsWith('[')) {
         orderProof = [];
-        if(json['order_proof'] is String) {
+        if (json['order_proof'] is String) {
           jsonDecode(json['order_proof']).forEach((v) {
             orderProof!.add(v);
           });
-        }else{
+        } else {
           json['order_proof'].forEach((v) {
             orderProof!.add(v);
           });
         }
-      }else{
+      } else {
         orderProof = [];
         orderProof!.add(json['order_proof'].toString());
       }
@@ -188,6 +193,11 @@ class OrderModel {
     storeDiscountAmount = json['restaurant_discount']?.toDouble();
     taxStatus = json['tax_status'] == 'included' ? true : false;
     additionalCharge = json['additional_charge']?.toDouble() ?? 0;
+    if (json['delivery_picture_by_customer'] != null &&
+        json['delivery_picture_by_customer'] != 'null') {
+      deliveryPictureByCustomer =
+          jsonDecode(json['delivery_picture_by_customer']).cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -16,6 +16,7 @@ class OrderDetailsModel {
   String? updatedAt;
   int? itemCampaignId;
   double? totalAddOnPrice;
+  List<String>? deliveryPictureByCustomer;
 
   OrderDetailsModel({
     this.id,
@@ -35,33 +36,56 @@ class OrderDetailsModel {
     this.updatedAt,
     this.itemCampaignId,
     this.totalAddOnPrice,
+    this.deliveryPictureByCustomer,
   });
 
   OrderDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     foodId = json['food_id'];
     orderId = json['order_id'];
-    price = json['price'].toDouble();
-    foodDetails = json['food_details'] != null ? FoodDetails.fromJson(json['food_details']) : null;
-    variation = [];
-    oldVariation = [];
-    if (json['variation'] != null && json['variation'].isNotEmpty) {
-      if(json['variation'][0]['values'] != null) {
-        json['variation'].forEach((v) {
-          variation!.add(Variation.fromJson(v));
-        });
-      }else {
-        json['variation'].forEach((v) {
-          oldVariation!.add(OldVariation.fromJson(v));
-        });
+    price = json['price']?.toDouble();
+
+    if (json['food_details'] != null) {
+      if (json['food_details'] is Map<String, dynamic>) {
+        foodDetails = FoodDetails.fromJson(json['food_details']);
+      } else {
+        print(
+            'Unexpected type for food_details: ${json['food_details'].runtimeType}');
       }
     }
-    if (json['add_ons'] != null) {
-      addOns = [];
-      json['add_ons'].forEach((v) {
-        addOns!.add(AddOn.fromJson(v));
-      });
+
+    variation = [];
+    oldVariation = [];
+    if (json['variation'] != null) {
+      if (json['variation'] is List) {
+        if (json['variation'].isNotEmpty &&
+            json['variation'][0] is Map<String, dynamic> &&
+            json['variation'][0]['values'] != null) {
+          json['variation'].forEach((v) {
+            variation!.add(Variation.fromJson(v));
+          });
+        } else {
+          json['variation'].forEach((v) {
+            oldVariation!.add(OldVariation.fromJson(v));
+          });
+        }
+      } else {
+        print(
+            'Unexpected type for variation: ${json['variation'].runtimeType}');
+      }
     }
+
+    if (json['add_ons'] != null) {
+      if (json['add_ons'] is List) {
+        addOns = [];
+        json['add_ons'].forEach((v) {
+          addOns!.add(AddOn.fromJson(v));
+        });
+      } else {
+        print('Unexpected type for add_ons: ${json['add_ons'].runtimeType}');
+      }
+    }
+
     discountOnFood = json['discount_on_food']?.toDouble();
     discountType = json['discount_type'];
     quantity = json['quantity'];
@@ -71,8 +95,23 @@ class OrderDetailsModel {
     updatedAt = json['updated_at'];
     itemCampaignId = json['item_campaign_id'];
     totalAddOnPrice = json['total_add_on_price']?.toDouble();
-  }
 
+    if (json['delivery_picture_by_customer'] != null) {
+      if (json['delivery_picture_by_customer'] is List) {
+        deliveryPictureByCustomer =
+            List<String>.from(json['delivery_picture_by_customer']);
+      } else {
+        // ignore: avoid_print
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+
+        print(
+            'Unexpected type for delivery_picture_by_customer: ${json['delivery_picture_by_customer'].runtimeType}');
+        print(
+            '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      }
+    }
+  }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
@@ -97,6 +136,9 @@ class OrderDetailsModel {
     data['updated_at'] = updatedAt;
     data['item_campaign_id'] = itemCampaignId;
     data['total_add_on_price'] = totalAddOnPrice;
+    if (deliveryPictureByCustomer != null) {
+      data['delivery_picture_by_customer'] = deliveryPictureByCustomer;
+    }
     return data;
   }
 }
@@ -122,7 +164,6 @@ class AddOn {
     return data;
   }
 }
-
 
 class FoodDetails {
   int? id;
@@ -271,13 +312,19 @@ class Variation {
   bool? required;
   List<VariationValue>? variationValues;
 
-  Variation({this.name, this.multiSelect, this.min, this.max, this.required, this.variationValues});
+  Variation(
+      {this.name,
+      this.multiSelect,
+      this.min,
+      this.max,
+      this.required,
+      this.variationValues});
 
   Variation.fromJson(Map<String, dynamic> json) {
-    if(json['max'] != null) {
+    if (json['max'] != null) {
       name = json['name'];
       multiSelect = json['type'] == 'multi';
-      min =  multiSelect! ? int.parse(json['min'].toString()) : 0;
+      min = multiSelect! ? int.parse(json['min'].toString()) : 0;
       max = multiSelect! ? int.parse(json['max'].toString()) : 0;
       required = json['required'] == 'on';
       if (json['values'] != null) {

@@ -369,6 +369,55 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            controllerOrderModel
+                                        .deliveryPictureByCustomer?[0] !=
+                                    null
+                                ? Row(
+                                    children: [
+                                      Text('${'delivery location'.tr}:',
+                                          style: robotoRegular),
+                                      const Expanded(child: SizedBox()),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: Image.network(
+                                                    '${controllerOrderModel.deliveryPictureByCustomer?[0]}',
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          child: CustomImageWidget(
+                                            image:
+                                                '${controllerOrderModel.deliveryPictureByCustomer?[0]}',
+                                            height: 80,
+                                            width: 80,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          height:
+                                              Dimensions.paddingSizeExtraSmall),
+                                      const Divider(
+                                          height: Dimensions.paddingSizeLarge),
+                                    ],
+                                  )
+                                : const SizedBox(),
+
+                            /////////////////////////////////////////
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: Dimensions.paddingSizeExtraSmall),

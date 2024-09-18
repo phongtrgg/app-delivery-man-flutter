@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:stackfood_multivendor_driver/feature/notification/domain/services/notification_service_interface.dart';
 import 'package:stackfood_multivendor_driver/feature/notification/domain/models/notification_model.dart';
 import 'package:stackfood_multivendor_driver/helper/date_converter_helper.dart';

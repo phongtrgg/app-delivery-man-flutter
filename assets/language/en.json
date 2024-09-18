@@ -1,8 +1,9 @@
 {
   "suffix_name": "Delivery",
   "sign_in": "Sign In",
-  "email": "E-mail",
-  "password": "Password",
+  "email": "E-mail", "method": "method",
+  "password": "Password",  "Cash on Delivery": "Cash on Delivery","Bank Transfer": "Bank Transfer",
+  "Amount to collect from the customer": "Amount to collect",
   "delivery location": "delivery location",
   "confirm_password": "Confirm Password",
   "remember_me": "Remember me",

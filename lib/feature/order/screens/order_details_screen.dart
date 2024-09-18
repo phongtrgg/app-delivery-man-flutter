@@ -967,89 +967,180 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         ? CustomButtonWidget(
                             buttonText: 'complete_delivery'.tr,
                             onPressed: () {
-                              if (Get.find<SplashController>()
-                                  .configModel!
-                                  .orderDeliveryVerification!) {
-                                Get.find<NotificationController>()
-                                    .sendDeliveredNotification(
-                                        controllerOrderModel.id);
+                              if (controllerOrderModel.paymentMethod ==
+                                  'cash_on_delivery') {
+                                Get.dialog(
+                                  Dialog(
+                                    child: Container(
+                                      height: 280.0,
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Text(
+                                              'Amount to collect from the customer'
+                                                  .tr,
+                                              style: robotoMedium.copyWith(
+                                                  fontSize: Dimensions
+                                                      .fontSizeExtraLarge)),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Center(
+                                                child: Text(
+                                                  ' ${PriceConverter.convertPrice(total)}',
+                                                  style: TextStyle(
+                                                    fontSize: Dimensions
+                                                        .fontSizeExtraLarge,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                  height: Dimensions
+                                                      .paddingSizeSmall),
+                                              const SizedBox(height: 10),
+                                              PaymentMethodSelectionWidget(),
+                                              Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                    if (Get.find<
+                                                            SplashController>()
+                                                        .configModel!
+                                                        .orderDeliveryVerification!) {
+                                                      Get.find<
+                                                              NotificationController>()
+                                                          .sendDeliveredNotification(
+                                                              controllerOrderModel
+                                                                  .id);
 
-                                Get.bottomSheet(
-                                        VerifyDeliverySheetWidget(
-                                          orderID: controllerOrderModel.id,
-                                          verify: Get.find<SplashController>()
-                                              .configModel!
-                                              .orderDeliveryVerification,
-                                          orderAmount: order.paymentMethod ==
-                                                  'partial_payment'
-                                              ? order.payments![1].amount!
-                                                  .toDouble()
-                                              : controllerOrderModel
-                                                  .orderAmount,
-                                          cod: controllerOrderModel
-                                                      .paymentMethod ==
-                                                  'cash_on_delivery' ||
-                                              (order.paymentMethod ==
-                                                      'partial_payment' &&
-                                                  order.payments![1]
-                                                          .paymentMethod ==
-                                                      'cash_on_delivery'),
-                                        ),
-                                        isScrollControlled: true)
-                                    .then((isSuccess) {
-                                  if (isSuccess &&
-                                          controllerOrderModel.paymentMethod ==
-                                              'cash_on_delivery' ||
-                                      (order.paymentMethod ==
-                                              'partial_payment' &&
-                                          order.payments![1].paymentMethod ==
-                                              'cash_on_delivery')) {
-                                    Get.bottomSheet(
-                                        CollectMoneyDeliverySheetWidget(
-                                          orderID: controllerOrderModel.id,
-                                          verify: Get.find<SplashController>()
-                                              .configModel!
-                                              .orderDeliveryVerification,
-                                          orderAmount: order.paymentMethod ==
-                                                  'partial_payment'
-                                              ? order.payments![1].amount!
-                                                  .toDouble()
-                                              : controllerOrderModel
-                                                  .orderAmount,
-                                          cod: controllerOrderModel
-                                                      .paymentMethod ==
-                                                  'cash_on_delivery' ||
-                                              (order.paymentMethod ==
-                                                      'partial_payment' &&
-                                                  order.payments![1]
-                                                          .paymentMethod ==
-                                                      'cash_on_delivery'),
-                                        ),
-                                        isScrollControlled: true,
-                                        isDismissible: false);
-                                  }
-                                });
-                              } else {
-                                Get.bottomSheet(
-                                    CollectMoneyDeliverySheetWidget(
-                                      orderID: controllerOrderModel.id,
-                                      verify: Get.find<SplashController>()
-                                          .configModel!
-                                          .orderDeliveryVerification,
-                                      orderAmount: order.paymentMethod ==
-                                              'partial_payment'
-                                          ? order.payments![1].amount!
-                                              .toDouble()
-                                          : controllerOrderModel.orderAmount,
-                                      cod: controllerOrderModel.paymentMethod ==
-                                              'cash_on_delivery' ||
-                                          (order.paymentMethod ==
-                                                  'partial_payment' &&
-                                              order.payments![1]
-                                                      .paymentMethod ==
-                                                  'cash_on_delivery'),
+                                                      Get.bottomSheet(
+                                                        VerifyDeliverySheetWidget(
+                                                          orderID:
+                                                              controllerOrderModel
+                                                                  .id,
+                                                          verify: Get.find<
+                                                                  SplashController>()
+                                                              .configModel!
+                                                              .orderDeliveryVerification,
+                                                          orderAmount: controllerOrderModel
+                                                                      .paymentMethod ==
+                                                                  'partial_payment'
+                                                              ? order
+                                                                  .payments![1]
+                                                                  .amount!
+                                                                  .toDouble()
+                                                              : controllerOrderModel
+                                                                  .orderAmount,
+                                                          cod: controllerOrderModel
+                                                                      .paymentMethod ==
+                                                                  'cash_on_delivery' ||
+                                                              (controllerOrderModel
+                                                                          .paymentMethod ==
+                                                                      'partial_payment' &&
+                                                                  order.payments![1]
+                                                                          .paymentMethod ==
+                                                                      'cash_on_delivery'),
+                                                        ),
+                                                        isScrollControlled:
+                                                            true,
+                                                      ).then((isSuccess) {
+                                                        if (isSuccess &&
+                                                            (controllerOrderModel
+                                                                        .paymentMethod ==
+                                                                    'cash_on_delivery' ||
+                                                                (controllerOrderModel
+                                                                            .paymentMethod ==
+                                                                        'partial_payment' &&
+                                                                    order.payments![1]
+                                                                            .paymentMethod ==
+                                                                        'cash_on_delivery'))) {
+                                                          Get.bottomSheet(
+                                                            CollectMoneyDeliverySheetWidget(
+                                                              orderID:
+                                                                  controllerOrderModel
+                                                                      .id,
+                                                              verify: Get.find<
+                                                                      SplashController>()
+                                                                  .configModel!
+                                                                  .orderDeliveryVerification,
+                                                              orderAmount: controllerOrderModel
+                                                                          .paymentMethod ==
+                                                                      'partial_payment'
+                                                                  ? order
+                                                                      .payments![
+                                                                          1]
+                                                                      .amount!
+                                                                      .toDouble()
+                                                                  : controllerOrderModel
+                                                                      .orderAmount,
+                                                              cod: controllerOrderModel
+                                                                          .paymentMethod ==
+                                                                      'cash_on_delivery' ||
+                                                                  (controllerOrderModel
+                                                                              .paymentMethod ==
+                                                                          'partial_payment' &&
+                                                                      order.payments![1]
+                                                                              .paymentMethod ==
+                                                                          'cash_on_delivery'),
+                                                            ),
+                                                            isScrollControlled:
+                                                                true,
+                                                            isDismissible:
+                                                                false,
+                                                          );
+                                                        }
+                                                      });
+                                                    } else {
+                                                      Get.bottomSheet(
+                                                        CollectMoneyDeliverySheetWidget(
+                                                          orderID:
+                                                              controllerOrderModel
+                                                                  .id,
+                                                          verify: Get.find<
+                                                                  SplashController>()
+                                                              .configModel!
+                                                              .orderDeliveryVerification,
+                                                          orderAmount: controllerOrderModel
+                                                                      .paymentMethod ==
+                                                                  'partial_payment'
+                                                              ? order
+                                                                  .payments![1]
+                                                                  .amount!
+                                                                  .toDouble()
+                                                              : controllerOrderModel
+                                                                  .orderAmount,
+                                                          cod: controllerOrderModel
+                                                                      .paymentMethod ==
+                                                                  'cash_on_delivery' ||
+                                                              (controllerOrderModel
+                                                                          .paymentMethod ==
+                                                                      'partial_payment' &&
+                                                                  order.payments![1]
+                                                                          .paymentMethod ==
+                                                                      'cash_on_delivery'),
+                                                        ),
+                                                        isScrollControlled:
+                                                            true,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: const Text('OK'),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    isScrollControlled: true);
+                                  ),
+                                );
                               }
                             },
                           )
@@ -1483,4 +1574,53 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           );
         },
       );
+}
+
+class PaymentMethodSelectionWidget extends StatefulWidget {
+  @override
+  _PaymentMethodSelectionWidgetState createState() =>
+      _PaymentMethodSelectionWidgetState();
+}
+
+class _PaymentMethodSelectionWidgetState
+    extends State<PaymentMethodSelectionWidget> {
+  late String selectedPaymentMethod;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedPaymentMethod =
+        'cash_on_delivery'; // Mặc định chọn thanh toán tiền mặt
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Thanh toán tiền mặt
+        RadioListTile(
+          title: Text('Cash on Delivery'.tr),
+          value: 'cash_on_delivery',
+          groupValue: selectedPaymentMethod,
+          onChanged: (value) {
+            setState(() {
+              selectedPaymentMethod = value.toString();
+            });
+          },
+        ),
+
+        RadioListTile(
+          title: Text('Bank Transfer'.tr),
+          value: 'bank_transfer',
+          groupValue: selectedPaymentMethod,
+          onChanged: (value) {
+            setState(() {
+              selectedPaymentMethod = value.toString();
+            });
+          },
+        ),
+      ],
+    );
+  }
 }
